@@ -37,7 +37,7 @@ Descricao: Jogo bomberman feito em C para o primeiro trabalho de APC 19.2
 /*variaveis Globais*/
 int vetorGlobalL, vetorGlobalC, playerLinha, playerColuna = 1, contadorInimigo=0, EndGame=0;
 /*mapa processual gerado*/
-void on_start(char MatrizTabuleiro[vetorGlobalL][vetorGlobalC], int vetorGlobalL, int vetorGlobalC)/*A fazer: Encerrar quando ganhar ou perder e nao esperar rodar o loop denovo*/
+void on_start(char MatrizTabuleiro[vetorGlobalL][vetorGlobalC], int vetorGlobalL, int vetorGlobalC)
 {
 	/*contadores*/
 	int i, z;
