@@ -21,6 +21,12 @@ Descricao: Jogo bomberman feito em C para o primeiro trabalho de APC 19.2
 #define CLEAR "clear"
 #endif
 /*---------------------------------------------------------------------------*/
+/*Define as cores a serem usadas*/
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN "\x1b[36m"
+#define ANSI_COLOR_BLUE "\x1b[34m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
 /*valor medio que a bomba levara para explodir (segundos)*/
 #define MEDIA_TEMPO 7
 /* erro da medida de tempo que a bomba levara para explodir (segundos)*/
@@ -88,10 +94,10 @@ int main (){
 	/*Configurando o Tabuleiro e atualizando em tempo real*/
 	time_t tempoExecucao = time(NULL) - tempoReal;
 	/*Inicia o Tabuleiro e tamanho (funciona melhor com impares por estetica) */
-	printf("Insira Tamanho do Tabuleiro:\n");
+	printf(ANSI_COLOR_BLUE"Insira Tamanho do Tabuleiro:\n");
 	scanf("%d", &vetor);
 	if (vetor<5){
-		printf("Valor Invalido, insira um numero maior que 5!\n");
+		printf(ANSI_COLOR_RED"Valor Invalido, insira um numero maior que 5!\n");
 		EndGame=5;
 	}
 	char Tabuleiro[vetor][vetor*2];
@@ -100,12 +106,17 @@ int main (){
 	/*declarando funcoes*/
 	void on_start(char Tabuleiro[vetorGlobalL][vetorGlobalC], int vetorGlobalL, int vetorGlobalC);
 	void movimentos(char Tabuleiro[vetorGlobalL][vetorGlobalC], int vetorX, int vetorY);
+	void PrintTabuleiro(char MatrizTabuleiro[vetorGlobalL][vetorGlobalC], int vetorGlobalL, int vetorGlobalC);
 	/*Iniciando Tabuleiro*/
 	on_start(Tabuleiro, vetorGlobalL, vetorGlobalC);
 	Tabuleiro[vetor-2][1] = '&';
 	playerLinha = vetor-2;
 	/*Loop para rodar o jogo por 200segundos*/
 	while(tempoExecucao <= 200 && EndGame==0){
+		/*Imprime o Tabuleiro*/
+		PrintTabuleiro(Tabuleiro, vetorGlobalL, vetorGlobalC);
+		char Input;
+		scanf(" %c", &Input);
 		if (contadorInimigo==0)
 			EndGame = 3;
 		/*Checa se a bomba explodiu neste momento*/
@@ -130,34 +141,31 @@ int main (){
 		    }
 		}
 		/*Monitora os movimentos do Player*/
-        char Input;
-		if (Input=='s' && (Tabuleiro[playerLinha-1][playerColuna]== ' ' || Tabuleiro[playerLinha-1][playerColuna]=='@'))
+		if ((Input=='s' || Input=='S') && (Tabuleiro[playerLinha-1][playerColuna]== ' ' || Tabuleiro[playerLinha-1][playerColuna]=='@'))
 		{
 			movimentos(Tabuleiro, 0, -1);
 		}
-		if (Input=='a' && (Tabuleiro[playerLinha][playerColuna-1]== ' ' || Tabuleiro[playerLinha][playerColuna-1]=='@'))
+		if ((Input=='a' || Input=='A') && (Tabuleiro[playerLinha][playerColuna-1]== ' ' || Tabuleiro[playerLinha][playerColuna-1]=='@'))
 		{
 			movimentos(Tabuleiro, -1, 0);
 		}
-		if (Input=='x' && (Tabuleiro[playerLinha+1][playerColuna]== ' ' || Tabuleiro[playerLinha+1][playerColuna]=='@'))
+		if ((Input=='x' || Input=='X') && (Tabuleiro[playerLinha+1][playerColuna]== ' ' || Tabuleiro[playerLinha+1][playerColuna]=='@'))
 		{
 			movimentos(Tabuleiro, 0, 1);
 		}
-		if (Input=='d' && (Tabuleiro[playerLinha][playerColuna+1]== ' ' || Tabuleiro[playerLinha][playerColuna+1]=='@'))
+		if ((Input=='d' || Input=='D') && (Tabuleiro[playerLinha][playerColuna+1]== ' ' || Tabuleiro[playerLinha][playerColuna+1]=='@'))
 		{
 			movimentos(Tabuleiro, 1, 0);
 		}
 		/*saida do jogo*/
-		if (Input=='e')
+		if (Input=='e' || Input=='E')
 			EndGame=5;
 		/*bomba!*/
-		if (Input=='b')
+		if (Input=='b' || Input=='B')
 		{
 			/*verifica se ha alguma bomba ativa*/
 			if (bombaAcionada==0)
 			{
-				/*Muda cor para Verde*/
-				printf("\033[1;31m");
 				printf("\a");
 				Tabuleiro[playerLinha][playerColuna] = '*';
 				vetorBombaLinha = playerLinha;
@@ -171,23 +179,11 @@ int main (){
         system(CLEAR);
         system(CLEAR);
 		/*Imprime o tabuleiro e informacoes*/
-		printf("\033[1;35m");
-		printf("\nInstrucoes:\n\n\tInimigos>@\tParedes Indestrutiveis>+\tParedes Quebraveis>#\n\n");
-		printf("Movimentacao:\n\n\tS-cima\tA-esquerda\tX-baixo\tD-direita\n\n\tB-bomba\t\tE-sair\n\n");
-		printf("Inimigos restantes: %d\n", contadorInimigo);
-		/*Muda cor*/
-		printf("\033[1;32m");
-		for (i = 0; i < vetor; ++i)
-		{
-			for (z = 0; z < vetor*2; ++z)
-			{
-				printf("%c", Tabuleiro[i][z]);
-			}
-		printf("\n");
-		}
-		printf("Tempo restante: %ld\n", 200-tempoExecucao);
+		printf(ANSI_COLOR_MAGENTA"\nInstrucoes:\n\n\tInimigos>@\tParedes Indestrutiveis>+\tParedes Quebraveis>#\n\n");
+		printf(ANSI_COLOR_BLUE"Movimentacao:\n\n\tS-cima\tA-esquerda\tX-baixo\tD-direita\n\n\tB-bomba\t\tE-sair\n\n");
+		printf(ANSI_COLOR_RED"Inimigos restantes: %d\n", contadorInimigo);
+		printf(ANSI_COLOR_CYAN"Tempo restante: %ld\n", 200-tempoExecucao);
 		tempoExecucao = time(NULL) - tempoReal;
-		scanf(" %c", &Input);
 	}
 	if (tempoExecucao==201)
 		EndGame = 2;
@@ -195,33 +191,36 @@ int main (){
 	printf("\033[1;36m");
 	switch(EndGame){
 		case 1:
-			printf("\n---------------------------------\n");
+			printf(ANSI_COLOR_RED"\n---------------------------------\n");
 			printf("You Died\n");
 			printf("---------------------------------\n");
 			break;
 		case 2:
-			printf("\n---------------------------------\n");
+			printf(ANSI_COLOR_RED"\n---------------------------------\n");
 			printf("Tempo Encerrado!\n");
 			printf("---------------------------------\n");
 			break;
 		case 3:
-			printf("\n---------------------------------\n");
+			printf(ANSI_COLOR_BLUE"\n---------------------------------\n");
 			printf("You Win!!!\n");
 			printf("---------------------------------\n");
 			break;
 		case 4:
-			printf("\n---------------------------------\n");
+			printf(ANSI_COLOR_RED"\n---------------------------------\n");
 			printf("Kabum! voce virou cinzas!\n");
 			printf("---------------------------------\n");
 			break;
 		case 5:
 			break;
 	}
-	printf("\n---------------------------------\n");
+	PrintTabuleiro(Tabuleiro, vetorGlobalL, vetorGlobalC);
+	printf(ANSI_COLOR_CYAN"\n---------------------------------\n");
 	printf("Jogo Encerrado.\nAperte Enter Para sair.\n");
 	printf("---------------------------------\n");
+
 	getchar();/*armazena lixo*/
-	getchar();/*pausa o codigo*/
+	getchar();/*pausa o jogo*/
+
 	/*Volta cor ao normal*/
 	printf("\033[0m");
     return 0;
@@ -248,5 +247,19 @@ void movimentos(char MatrizTabuleiro[vetorGlobalL][vetorGlobalC],int vetorX,int 
 			EndGame=1;
 		}
 		MatrizTabuleiro[playerLinha][playerColuna] = '&';
+	}
+}
+
+void PrintTabuleiro(char MatrizTabuleiro[vetorGlobalL][vetorGlobalC], int vetorGlobalL, int vetorGlobalC){
+	int i,z;
+	/*Muda cor*/
+	printf(ANSI_COLOR_GREEN"\033[1;32m");
+	for (i = 0; i < vetorGlobalL; ++i)
+	{
+		for (z = 0; z < vetorGlobalC; ++z)
+		{
+			printf("%c", MatrizTabuleiro[i][z]);
+		}
+	printf("\n");
 	}
 }
