@@ -58,14 +58,14 @@ void iniciar_tabuleiro(void)
 		for (z = 1; z < 27; ++z)
 		{
 			/*20% de chance de ter '#' por vetor valido*/
-			if (2==RAND(2,2) && MatrizTabuleiro[i][z]!='+')
+			if (2==RAND(2,2) && Tabuleiro[i][z]!='+')
 			{
-				MatrizTabuleiro[i][z] = '#';
+				Tabuleiro[i][z] = '#';
 			}
 			/*5% de chance de ter '@' por vetor valido*/
-			if (2==RAND(10,10) && MatrizTabuleiro[i][z]!='+')
+			if (2==RAND(10,10) && Tabuleiro[i][z]!='+')
 			{
-				MatrizTabuleiro[i][z] = '@';
+				Tabuleiro[i][z] = '@';
 				contadorInimigo+=1;
 			}
 		}
@@ -77,7 +77,7 @@ int main (){
 	/*inicia número aleatorio*/
 	srand(time(0));
 	/* Inicia Contadores e Vetores*/
-	int i, z, vetor, vetorBombaLinha, vetorBombaColuna, bombaAcionada=0;
+	int i, z, vetorBombaLinha, vetorBombaColuna, bombaAcionada=0;
 	/*Inicia contadores de tempo*/
 	time_t tempoReal = time(NULL);
 	time_t tempoDetonamento;
@@ -155,10 +155,10 @@ int main (){
         system(CLEAR);
         system(CLEAR);
 		/*Imprime o tabuleiro e informacoes*/
+		tempoExecucao = time(NULL) - tempoReal;
 		printf("\nInstrucoes:\n\n\tInimigos>@\tParedes Indestrutiveis>+\tParedes Quebraveis>#\n\n");
 		printf("Movimentacao:\n\n\tS-cima\tA-esquerda\tX-baixo\tD-direita\n\n\tB-bomba\t\tE-sair\n\n");
 		printf("Tempo restante: %ld\n", 200-tempoExecucao);
-		tempoExecucao = time(NULL) - tempoReal;
 	}
 	if (tempoExecucao==201)
 		EndGame = 2;
@@ -187,7 +187,7 @@ int main (){
 		case 5:
 			break;
 	}
-	PrintTabuleiro(Tabuleiro, vetorGlobalL, vetorGlobalC);
+	PrintTabuleiro();
 	printf("\n---------------------------------\n");
 	printf("Jogo Encerrado.\nAperte Enter Para sair.\n");
 	printf("---------------------------------\n");
