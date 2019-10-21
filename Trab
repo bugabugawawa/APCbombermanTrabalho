@@ -42,15 +42,15 @@ void iniciar_tabuleiro(void)
 		for (z = 0; z < 28; ++z)
 		{
 			if (i!=14)
-			MatrizTabuleiro[i][z] = ' ';
+			Tabuleiro[i][z] = ' ';
 			if (i%2==0 && z%2==0 && i!=14 && z!=27)
-			MatrizTabuleiro[i][z] = '+';
+			Tabuleiro[i][z] = '+';
 
-			MatrizTabuleiro[14][z] = '_';
-			MatrizTabuleiro[0][z] = '_';
+			Tabuleiro[14][z] = '_';
+			Tabuleiro[0][z] = '_';
 		}
-		MatrizTabuleiro[i][0] = '|';
-		MatrizTabuleiro[i][27] = '|';
+		Tabuleiro[i][0] = '|';
+		Tabuleiro[i][27] = '|';
 	}
 	/*Mapa dinamico gerado aqui*/
 	for (i = 1; i < 14; ++i)
@@ -95,7 +95,7 @@ int main (){
 		/*Imprime o Tabuleiro*/
 		PrintTabuleiro();
 		char Input;
-		getchar("%c", &Input);
+		Input = getchar();
 		if (contadorInimigo==0)
 			EndGame = 3;
 		/*Checa se a bomba explodiu neste momento*/
@@ -120,19 +120,19 @@ int main (){
 		/*Monitora os movimentos do Player*/
 		if ((Input=='s' || Input=='S') && (Tabuleiro[playerLinha-1][playerColuna]== ' ' || Tabuleiro[playerLinha-1][playerColuna]=='@'))
 		{
-			movimentos(Tabuleiro, 0, -1);
+			movimentos(0, -1);
 		}
 		if ((Input=='a' || Input=='A') && (Tabuleiro[playerLinha][playerColuna-1]== ' ' || Tabuleiro[playerLinha][playerColuna-1]=='@'))
 		{
-			movimentos(Tabuleiro, -1, 0);
+			movimentos(-1, 0);
 		}
 		if ((Input=='x' || Input=='X') && (Tabuleiro[playerLinha+1][playerColuna]== ' ' || Tabuleiro[playerLinha+1][playerColuna]=='@'))
 		{
-			movimentos(Tabuleiro, 0, 1);
+			movimentos(0, 1);
 		}
 		if ((Input=='d' || Input=='D') && (Tabuleiro[playerLinha][playerColuna+1]== ' ' || Tabuleiro[playerLinha][playerColuna+1]=='@'))
 		{
-			movimentos(Tabuleiro, 1, 0);
+			movimentos(1, 0);
 		}
 		/*saida do jogo*/
 		if (Input=='e' || Input=='E')
